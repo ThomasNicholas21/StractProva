@@ -6,9 +6,9 @@ home_bp = Blueprint('home', __name__)
 def home():
     dados_json = jsonify(
         {
-            'name':'teste',
-            'e-mail': 'teste@teste.com',
-            'linkedln': 'www.linkedln.com'
+            'nome':'Thomas Nicholas Pedrosa Matias',
+            'email': 'thomasnicholaas@gmail.com',
+            'link': 'https://www.linkedin.com/in/thomaas-nicholas/'
         }
     )
 
