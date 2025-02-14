@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from project_stract.utils.generate_csv import generator_csv
 
 home_bp = Blueprint('home', __name__)
