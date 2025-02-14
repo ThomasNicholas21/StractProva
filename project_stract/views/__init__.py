@@ -1,1 +1,1 @@
-from project_stract.views.home import *
+from project_stract.views.home_view import *
