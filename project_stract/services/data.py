@@ -34,7 +34,7 @@ def generate_platform_insights(plataforma):
                 for key, value in iterable.items():
                     dict_default.setdefault(key, value)
 
-                all_insights.append(dict_default)
+            all_insights.append(dict_default)
 
     
     return all_insights
@@ -44,4 +44,5 @@ if __name__ == "__main__":
     plataforma1 = plataformas['platforms'][0]['value']
     teste = generate_platform_insights(plataforma1)
 
-    print(teste)
+    for i in teste:
+        print(i)
