@@ -1,7 +1,7 @@
 import requests
 
 
-# verificando platformas
+# referente ao endpoint: /api/platforms
 def get_platforms():
     url = "https://sidebar.stract.to/api/platforms"
     headers = {"Authorization": "ProcessoSeletivoStract2025"}
@@ -9,8 +9,9 @@ def get_platforms():
     return response.json()
 
 plataformas = get_platforms()
-# print(plataformas)
 
+
+# referente ao endpoint: /api/accounts?platform={{platform}}
 def get_accounts(plataforma):
     url = f"https://sidebar.stract.to/api/accounts"
     headers = {"Authorization": "ProcessoSeletivoStract2025"}
@@ -41,15 +42,8 @@ def get_accounts(plataforma):
 
     return all_accounts_infos
 
-# for plataforma in plataformas['platforms']:
-#     # nome descritivo
-#     nome = plataforma['text']
-#     # valor
-#     valor = plataforma['value']
-#     contas = get_accounts(valor)
 
-#     print(f'{nome}: {valor}', f'{contas}', sep='\n')
-
+# referente ao endpoint: /api/fields?platform={{platform}}
 def get_fields(plataforma):
     url = f"https://sidebar.stract.to/api/fields"
     headers = {"Authorization": "ProcessoSeletivoStract2025"}
@@ -80,19 +74,8 @@ def get_fields(plataforma):
 
     return all_fields_infos
 
-# for plataforma in plataformas['platforms']:
-#     # nome descritivo
-#     nome = plataforma['text']
-#     # valor
-#     valor = plataforma['value']
-#     contas = get_fields(valor)
 
-#     print(f'{nome}: {valor}', f'{contas}', sep='\n')
-
-
-
-# print(plataforma, account, fields, sep='\n\n')
-
+# referente ao endpoint: /api/insights?platform={{platform}}&account={{account}}&token={{token}}&fields={{field1,field2,etc}}
 def get_insights(plataforma, account_id, token, fields):
     url = "https://sidebar.stract.to/api/insights"
     headers = {"Authorization": "ProcessoSeletivoStract2025"}  
@@ -116,12 +99,3 @@ def get_insights(plataforma, account_id, token, fields):
         return None
 
     return response.json()
-
-plataforma = plataformas['platforms'][0]['value']
-accounts = get_accounts(plataforma)
-account_id = accounts[0]['id']
-account_token = accounts[0]['token']
-fields = get_fields(plataforma)
-
-insights = get_insights(plataforma, account_id, account_token, fields)
-print(insights)
