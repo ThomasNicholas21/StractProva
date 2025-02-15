@@ -89,5 +89,39 @@ def get_fields(plataforma):
 
 #     print(f'{nome}: {valor}', f'{contas}', sep='\n')
 
-fields = get_fields(plataformas['platforms'][0]['value'])
-print(fields[0]['value'])
+
+
+# print(plataforma, account, fields, sep='\n\n')
+
+def get_insights(plataforma, account_id, token, fields):
+    url = "https://sidebar.stract.to/api/insights"
+    headers = {"Authorization": "ProcessoSeletivoStract2025"}  
+    
+
+    field_value_list = []
+    for value in fields:
+        field_value_list.append(value['value'])
+
+    params = {
+        "platform": plataforma,
+        "account": account_id,
+        "token": token,  
+        "fields": ','.join(field_value_list)
+    }
+
+    response = requests.get(url, headers=headers, params=params)
+    
+    if response.status_code != 200:
+        print(f"Erro {response.status_code}: {response.text}")
+        return None
+
+    return response.json()
+
+plataforma = plataformas['platforms'][0]['value']
+accounts = get_accounts(plataforma)
+account_id = accounts[0]['id']
+account_token = accounts[0]['token']
+fields = get_fields(plataforma)
+
+insights = get_insights(plataforma, account_id, account_token, fields)
+print(insights)
