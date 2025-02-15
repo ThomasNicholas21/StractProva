@@ -1,5 +1,6 @@
 from project_stract.services.api_stract import get_platforms, get_accounts, get_fields, get_insights
 # from api_stract import get_platforms, get_accounts, get_fields, get_insights
+
 # O endpoint "/{{plataforma}}" deve retornar uma 
 # tabela em que cada linha represente um anúncio 
 # veiculado na plataforma indicada. As colunas 
@@ -69,9 +70,51 @@ def generate_platform_insights_summary(plataforma):
     return summary_insights_list
 
 
-if __name__ == "__main__":
-    plataformas = get_platforms()
-    plataforma3 = plataformas['platforms'][2]['value']
+# O endpoint "/geral" deve trazer todos os anúncios de todas as plataformas. 
+# Nesse relatório devem ser adicionadas colunas para identificar por nome a 
+# plataforma na qual o anúncio está sendo veiculado, além do nome conta que 
+# esta veiculando o anúncio. Devem haver colunas para todos os campos existentes 
+# na API. Campos de diferentes plataformas que possuam o mesmo nome podem ser 
+# apresentados na mesma coluna, isto é, uma mesma coluna pode (mas não necessariamente 
+# deve) ser aproveitada pelas mesmas plataformas. O campo pode ficar vazio nas linhas 
+# das plataformas nas quais ele não exista. Uma exceção é o campo "Cost per Click", 
+# que não está disponível para esta API no Google Analytics, porém pode ser calculado 
+# dividindo-se o valor de "spend" pelo valor de "clicks".
+def generate_all_platform_insights():
+    platforms = get_platforms()
+    list_all_platforms = []
 
-    valores = generate_platform_insights_summary(plataforma3)
+    # Coletar todos os insights
+    for platform in platforms['platforms']:
+        for key_platform, value_platform in platform.items():
+            if key_platform == 'value':
+                list_platforms = generate_platform_insights(value_platform)
+                list_all_platforms.extend(list_platforms)
+
+
+    all_keys = set()
+    for insight in list_all_platforms:
+        all_keys.update(insight.keys())
+
+
+    for insight in list_all_platforms:
+        for key in all_keys:
+            if key not in insight:
+                insight[key] = "" 
+
+
+        if insight["cost_per_click"] == "":
+            if insight["spend"] and insight["clicks"]:
+                cpc_sum = insight["spend"] / insight["clicks"]
+                insight["cost_per_click"] = f"{cpc_sum:.2f}"
+            else:
+                insight["cost_per_click"] = 0
+                
+
+    return list_all_platforms
+
+
+if __name__ == "__main__":
+
+    valores = generate_all_platform_insights()
     print(valores)
