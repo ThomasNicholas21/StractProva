@@ -1,6 +1,6 @@
 from flask import Blueprint
 from project_stract.services.data import generate_platform_insights, generate_platform_insights_summary
-from project_stract.services.data import generate_all_platform_insights
+from project_stract.services.data import generate_all_platform_insights, generate_all_platform_insights_summary
 from project_stract.utils.generate_csv import generator_csv
 
 ads_blueprint = Blueprint("ads", __name__)
@@ -28,5 +28,7 @@ def get_all_ads():
 
 @ads_blueprint.route('/geral/resumo', methods=['GET'])
 def get_general_summary():
-    return 'teste /geral/resumo'
 
+    list_all_infos_summary = generate_all_platform_insights_summary()
+
+    return generator_csv(list_all_infos_summary, filename='geral_resumo.csv')
