@@ -92,15 +92,17 @@ def generate_all_platform_insights():
                 list_all_platforms.extend(list_platforms)
 
 
-    all_keys = set()
+    all_keys = []
     for insight in list_all_platforms:
-        all_keys.update(insight.keys())
+        for key in insight.keys():
+            if key not in all_keys:
+                all_keys.append(key)
 
 
     for insight in list_all_platforms:
         for key in all_keys:
             if key not in insight:
-                insight[key] = "" 
+                insight[key] = ""
 
 
         if insight["cost_per_click"] == "":
@@ -109,7 +111,7 @@ def generate_all_platform_insights():
                 insight["cost_per_click"] = f"{cpc_sum:.2f}"
             else:
                 insight["cost_per_click"] = 0
-                
+
 
     return list_all_platforms
 
