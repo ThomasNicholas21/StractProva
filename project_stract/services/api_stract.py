@@ -8,8 +8,6 @@ def get_platforms():
     response = requests.get(url=url, headers=headers)
     return response.json()
 
-plataformas = get_platforms()
-
 
 # referente ao endpoint: /api/accounts?platform={{platform}}
 def get_accounts(plataforma):
