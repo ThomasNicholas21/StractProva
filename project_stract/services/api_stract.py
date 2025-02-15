@@ -41,12 +41,53 @@ def get_accounts(plataforma):
 
     return all_accounts_infos
 
-for plataforma in plataformas['platforms']:
-    # nome descritivo
-    nome = plataforma['text']
-    # valor
-    valor = plataforma['value']
-    contas = get_accounts(valor)
+# for plataforma in plataformas['platforms']:
+#     # nome descritivo
+#     nome = plataforma['text']
+#     # valor
+#     valor = plataforma['value']
+#     contas = get_accounts(valor)
 
-    print(f'{nome}: {valor}', f'{contas}', sep='\n')
+#     print(f'{nome}: {valor}', f'{contas}', sep='\n')
 
+def get_fields(plataforma):
+    url = f"https://sidebar.stract.to/api/fields"
+    headers = {"Authorization": "ProcessoSeletivoStract2025"}
+
+    all_fields_infos = []
+    page = 1 
+
+    while True:
+        params = {"platform": plataforma, "page": page}
+        response = requests.get(url=url, headers=headers, params=params)
+        
+        if response.status_code != 200:
+            print(f"Erro ao buscar dados: {response.status_code}")
+            break
+
+        data = response.json()
+
+        all_fields_infos.extend(data.get("fields", []))
+
+        pagination = data.get("pagination", {})
+        current_page = pagination.get("current", 1)
+        total_pages = pagination.get("total", 1)
+
+        if current_page >= total_pages:
+            break
+
+        page += 1
+
+    return all_fields_infos
+
+# for plataforma in plataformas['platforms']:
+#     # nome descritivo
+#     nome = plataforma['text']
+#     # valor
+#     valor = plataforma['value']
+#     contas = get_fields(valor)
+
+#     print(f'{nome}: {valor}', f'{contas}', sep='\n')
+
+fields = get_fields(plataformas['platforms'][0]['value'])
+print(fields[0]['value'])
