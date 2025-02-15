@@ -1,5 +1,5 @@
 from project_stract.services.api_stract import get_platforms, get_accounts, get_fields, get_insights
-
+# from api_stract import get_platforms, get_accounts, get_fields, get_insights
 # O endpoint "/{{plataforma}}" deve retornar uma 
 # tabela em que cada linha represente um anúncio 
 # veiculado na plataforma indicada. As colunas 
@@ -39,10 +39,39 @@ def generate_platform_insights(plataforma):
     
     return all_insights
 
+
+# O endpoint "/{{plataforma}}/resumo" deve trazer uma tabela similar, 
+# mas colapsando em uma única linha todas as linhas que forem da mesma 
+# conta, ficando apenas uma linha para cada conta. Os dados devem ser 
+# somados nas colunas numéricas e, nas colunas que tem texto, os dados 
+# podem ficar vazios (exceto o nome da conta, que é o mesmo para todas 
+# as linhas agregadas da conta em questão). 
+def generate_platform_insights_summary(plataforma):
+    all_insights = generate_platform_insights(plataforma)
+    
+    # Dicionário para armazenar a soma dos valores
+    summary_insights = {}
+    summary_insights_list = []
+
+    for insight in all_insights:
+        for key, value in insight.items():
+            if key == "platform":
+                summary_insights["platform"] = value
+
+            elif isinstance(value, (int, float)):
+                summary_insights[key] = summary_insights.get(key, 0) + value
+
+            else:
+                summary_insights[key] = ""
+
+    summary_insights_list.append(summary_insights)
+
+    return summary_insights_list
+
+
 if __name__ == "__main__":
     plataformas = get_platforms()
-    plataforma1 = plataformas['platforms'][0]['value']
-    teste = generate_platform_insights(plataforma1)
+    plataforma3 = plataformas['platforms'][2]['value']
 
-    for i in teste:
-        print(i)
+    valores = generate_platform_insights_summary(plataforma3)
+    print(valores)
