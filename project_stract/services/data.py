@@ -113,6 +113,48 @@ def generate_all_platform_insights():
 
     return list_all_platforms
 
+# O endpoint "/geral/resumo" deve trazer uma tabela similar, mas colapsando em uma única linha 
+# todas as linhas que forem da mesma plataforma. Caso as colunas seja numéricas, os dados devem 
+# ser somados. Caso sejam texto, a coluna pode ficar vazia na linha em questão (exceto nome da 
+# plataforma, que é o mesmo para todas as linhas agregadas da plataforma em questão).
+def generate_all_platform_insights_summary():
+    list_all_platforms = generate_all_platform_insights()
+
+    summary_insights_dict = {}
+    all_keys = []
+
+
+    for insight in list_all_platforms:
+        for key in insight.keys():
+            if key not in all_keys:
+                all_keys.append(key)
+
+    for insight in list_all_platforms:
+        platform = insight.get("platform")
+
+        if platform not in summary_insights_dict:
+            summary_insights_dict[platform] = {"platform": platform}
+
+        summary_insights = summary_insights_dict[platform]
+
+        for key in all_keys:
+            value = insight.get(key, None)
+
+            if key == "platform":
+                continue  
+
+            elif isinstance(value, (int, float)):
+                summary_insights[key] = summary_insights.get(key, 0) + value
+
+            elif value is None:
+                summary_insights[key] = "" 
+
+            else:
+                summary_insights[key] = ""
+
+    return list(summary_insights_dict.values())
+
+
 
 if __name__ == "__main__":
 
