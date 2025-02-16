@@ -46,7 +46,7 @@ def generate_platform_insights_summary(plataforma):
                 summary_insights["platform"] = value
 
             elif isinstance(value, (int, float)):
-                summary_insights[key] = summary_insights.get(key, 0) + value
+                summary_insights[key] = round(summary_insights.get(key, 0) + value)
 
             else:
                 summary_insights[key] = ""
@@ -121,7 +121,7 @@ def generate_all_platform_insights_summary():
                 continue  
 
             elif isinstance(value, (int, float)):
-                summary_insights[key] = summary_insights.get(key, 0) + value
+                summary_insights[key] = round(summary_insights.get(key, 0) + value)
 
             elif value is None:
                 summary_insights[key] = "" 
