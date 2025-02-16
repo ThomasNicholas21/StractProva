@@ -20,11 +20,14 @@ A aplicação foi estruturada de forma modular, garantindo melhor organização,
 - `/{{plataforma}}`
 - `/{{plataforma}}/resumo`
 - `/geral`
-- `geral/resumo`
+- `/geral/resumo`
 
 ## :wrench: Iniciando o projeto
 1. Clone este repositório usando: `https://github.com/ThomasNicholas21/StractProva.git`;
 2. Entre no diretório;
 3. Rode o comando `pip install -r requirements.txt` para instalar todas as dependências;
 4. Rode o comando `python manage.py` para iniciar a aplicação.
-5. Nos endpoints utilize valores válidos: `meta_ads`, `ga4` e `tiktok_insights`.
+5. Nos endpoints utilize valores válidos para o parâmetro plataforma:
+- `meta_ads`
+- `ga4`
+- `tiktok_insights`
