@@ -7,7 +7,7 @@ ads_blueprint = Blueprint("ads", __name__)
 
 VALID_PARAMS_PLATFORM = ['meta_ads', 'ga4', 'tiktok_insights']
 
-@ads_blueprint.route('/<string:platforma>', methods=['GET'])
+@ads_blueprint.route('/<string:plataforma>', methods=['GET'])
 def get_ads_by_platform(plataforma):
     if plataforma not in VALID_PARAMS_PLATFORM:
         return jsonify({"error": "Plataforma invalida"}), 400
